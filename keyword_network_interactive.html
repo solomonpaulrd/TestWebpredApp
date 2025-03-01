@@ -1,0 +1,170 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "black"}, "group": 0, "id": "garda", "label": "garda", "shape": "dot", "size": 50, "title": "garda: 717900 views"}, {"font": {"color": "black"}, "group": 0, "id": "ross", "label": "ross", "shape": "dot", "size": 10, "title": "ross"}, {"font": {"color": "black"}, "group": 0, "id": "pursuit", "label": "pursuit", "shape": "dot", "size": 10, "title": "pursuit"}, {"font": {"color": "black"}, "group": 0, "id": "male", "label": "male", "shape": "dot", "size": 10, "title": "male"}, {"font": {"color": "black"}, "group": 1, "id": "width", "label": "width", "shape": "dot", "size": 48, "title": "width: 698680 views"}, {"font": {"color": "black"}, "group": 0, "id": "trafficking", "label": "trafficking", "shape": "dot", "size": 10, "title": "trafficking"}, {"font": {"color": "black"}, "group": 0, "id": "assault", "label": "assault", "shape": "dot", "size": 10, "title": "assault"}, {"font": {"color": "black"}, "group": 0, "id": "blanchardstown", "label": "blanchardstown", "shape": "dot", "size": 10, "title": "blanchardstown"}, {"font": {"color": "black"}, "group": 0, "id": "waterford", "label": "waterford", "shape": "dot", "size": 11, "title": "waterford: 30474 views"}, {"font": {"color": "black"}, "group": 0, "id": "station", "label": "station", "shape": "dot", "size": 10, "title": "station"}, {"font": {"color": "black"}, "group": 0, "id": "seizure", "label": "seizure", "shape": "dot", "size": 10, "title": "seizure: 3073 views"}, {"font": {"color": "black"}, "group": 0, "id": "running", "label": "running", "shape": "dot", "size": 10, "title": "running"}, {"font": {"color": "black"}, "group": 0, "id": "men", "label": "men", "shape": "dot", "size": 10, "title": "men"}, {"font": {"color": "black"}, "group": 0, "id": "members", "label": "members", "shape": "dot", "size": 10, "title": "members"}, {"font": {"color": "black"}, "group": 0, "id": "gang", "label": "gang", "shape": "dot", "size": 12, "title": "gang: 40198 views"}, {"font": {"color": "black"}, "group": 0, "id": "moorehouse", "label": "moorehouse", "shape": "dot", "size": 10, "title": "moorehouse"}, {"font": {"color": "black"}, "group": 0, "id": "domestic", "label": "domestic", "shape": "dot", "size": 10, "title": "domestic: 549 views"}, {"font": {"color": "black"}, "group": 0, "id": "fowler", "label": "fowler", "shape": "dot", "size": 10, "title": "fowler"}, {"font": {"color": "black"}, "group": 0, "id": "dublin", "label": "dublin", "shape": "dot", "size": 10, "title": "dublin"}, {"font": {"color": "black"}, "group": 0, "id": "criminal", "label": "criminal", "shape": "dot", "size": 10, "title": "criminal: 3683 views"}, {"font": {"color": "black"}, "group": 0, "id": "want", "label": "want", "shape": "dot", "size": 10, "title": "want"}, {"font": {"color": "black"}, "group": 0, "id": "opw", "label": "opw", "shape": "dot", "size": 10, "title": "opw"}, {"font": {"color": "black"}, "group": 1, "id": "height", "label": "height", "shape": "dot", "size": 10, "title": "height: 8572 views"}, {"font": {"color": "black"}, "group": 1, "id": "murder", "label": "murder", "shape": "dot", "size": 10, "title": "murder: 9195 views"}, {"font": {"color": "black"}, "group": 1, "id": "watson", "label": "watson", "shape": "dot", "size": 13, "title": "watson: 63311 views"}, {"font": {"color": "black"}, "group": 1, "id": "FALSE", "label": "FALSE", "shape": "dot", "size": 11, "title": "FALSE: 26384 views"}, {"font": {"color": "black"}, "group": 1, "id": "bike", "label": "bike", "shape": "dot", "size": 10, "title": "bike: 12265 views"}, {"font": {"color": "black"}, "group": 1, "id": "charles", "label": "charles", "shape": "dot", "size": 10, "title": "charles: 11019 views"}, {"font": {"color": "black"}, "group": 2, "id": "hospital", "label": "hospital", "shape": "dot", "size": 15, "title": "hospital: 90609 views"}, {"font": {"color": "black"}, "group": 2, "id": "suspect", "label": "suspect", "shape": "dot", "size": 10, "title": "suspect"}, {"font": {"color": "black"}, "group": 3, "id": "prison", "label": "prison", "shape": "dot", "size": 12, "title": "prison: 37087 views"}, {"font": {"color": "black"}, "group": 3, "id": "service", "label": "service", "shape": "dot", "size": 10, "title": "service"}, {"font": {"color": "black"}, "group": 4, "id": "john", "label": "john", "shape": "dot", "size": 10, "title": "john: 4608 views"}, {"font": {"color": "black"}, "group": 4, "id": "went", "label": "went", "shape": "dot", "size": 10, "title": "went"}, {"font": {"color": "black"}, "group": 5, "id": "victims", "label": "victims", "shape": "dot", "size": 10, "title": "victims: 6620 views"}, {"font": {"color": "black"}, "group": 5, "id": "money", "label": "money", "shape": "dot", "size": 10, "title": "money"}, {"font": {"color": "black"}, "group": 6, "id": "cannabis", "label": "cannabis", "shape": "dot", "size": 10, "title": "cannabis: 6522 views"}, {"font": {"color": "black"}, "group": 6, "id": "use", "label": "use", "shape": "dot", "size": 10, "title": "use"}, {"font": {"color": "black"}, "group": 7, "id": "tribunal", "label": "tribunal", "shape": "dot", "size": 10, "title": "tribunal: 8313 views"}, {"font": {"color": "black"}, "group": 7, "id": "case", "label": "case", "shape": "dot", "size": 10, "title": "case"}, {"font": {"color": "black"}, "group": 8, "id": "george", "label": "george", "shape": "dot", "size": 10, "title": "george: 8852 views"}, {"font": {"color": "black"}, "group": 8, "id": "police", "label": "police", "shape": "dot", "size": 10, "title": "police"}, {"font": {"color": "black"}, "group": 9, "id": "lowry", "label": "lowry", "shape": "dot", "size": 11, "title": "lowry: 19054 views"}, {"font": {"color": "black"}, "group": 9, "id": "independent", "label": "independent", "shape": "dot", "size": 10, "title": "independent"}, {"font": {"color": "black"}, "group": 10, "id": "No keywords", "label": "No keywords", "shape": "dot", "size": 10, "title": "No keywords: 2898 views"}, {"font": {"color": "black"}, "group": 1, "id": "kenneally", "label": "kenneally", "shape": "dot", "size": 11, "title": "kenneally: 26183 views"}, {"font": {"color": "black"}, "group": 11, "id": "results", "label": "results", "shape": "dot", "size": 10, "title": "results: 4029 views"}, {"font": {"color": "black"}, "group": 11, "id": "south", "label": "south", "shape": "dot", "size": 10, "title": "south"}, {"font": {"color": "black"}, "group": 12, "id": "sophie", "label": "sophie", "shape": "dot", "size": 10, "title": "sophie: 4733 views"}, {"font": {"color": "black"}, "group": 12, "id": "label", "label": "label", "shape": "dot", "size": 10, "title": "label"}, {"font": {"color": "black"}, "group": 13, "id": "dog", "label": "dog", "shape": "dot", "size": 10, "title": "dog: 15503 views"}, {"font": {"color": "black"}, "group": 13, "id": "dogs", "label": "dogs", "shape": "dot", "size": 10, "title": "dogs"}, {"font": {"color": "black"}, "group": 14, "id": "farrell", "label": "farrell", "shape": "dot", "size": 11, "title": "farrell: 31995 views"}, {"font": {"color": "black"}, "group": 14, "id": "man", "label": "man", "shape": "dot", "size": 10, "title": "man"}, {"font": {"color": "black"}, "group": 15, "id": "glont", "label": "glont", "shape": "dot", "size": 10, "title": "glont: 11203 views"}, {"font": {"color": "black"}, "group": 15, "id": "court", "label": "court", "shape": "dot", "size": 11, "title": "court: 20122 views"}, {"font": {"color": "black"}, "group": 16, "id": "site", "label": "site", "shape": "dot", "size": 10, "title": "site: 3566 views"}, {"font": {"color": "black"}, "group": 16, "id": "gardai", "label": "gardai", "shape": "dot", "size": 10, "title": "gardai"}, {"font": {"color": "black"}, "group": 17, "id": "fraud", "label": "fraud", "shape": "dot", "size": 10, "title": "fraud: 3227 views"}, {"font": {"color": "black"}, "group": 17, "id": "crime", "label": "crime", "shape": "dot", "size": 10, "title": "crime"}, {"font": {"color": "black"}, "group": 18, "id": "robert", "label": "robert", "shape": "dot", "size": 13, "title": "robert: 57811 views"}, {"font": {"color": "black"}, "group": 18, "id": "donoghue", "label": "donoghue", "shape": "dot", "size": 10, "title": "donoghue"}, {"font": {"color": "black"}, "group": 19, "id": "kmh", "label": "kmh", "shape": "dot", "size": 10, "title": "kmh: 2394 views"}, {"font": {"color": "black"}, "group": 19, "id": "driver", "label": "driver", "shape": "dot", "size": 10, "title": "driver"}, {"font": {"color": "black"}, "group": 0, "id": "council", "label": "council", "shape": "dot", "size": 12, "title": "council: 38090 views"}, {"font": {"color": "black"}, "group": 21, "id": "gsoc", "label": "gsoc", "shape": "dot", "size": 10, "title": "gsoc: 11880 views"}, {"font": {"color": "black"}, "group": 21, "id": "party", "label": "party", "shape": "dot", "size": 10, "title": "party"}, {"font": {"color": "black"}, "group": 22, "id": "inquiry", "label": "inquiry", "shape": "dot", "size": 10, "title": "inquiry: 1088 views"}, {"font": {"color": "black"}, "group": 22, "id": "families", "label": "families", "shape": "dot", "size": 10, "title": "families"}, {"font": {"color": "black"}, "group": 15, "id": "test", "label": "test", "shape": "dot", "size": 10, "title": "test"}, {"font": {"color": "black"}, "group": 20, "id": "woman", "label": "woman", "shape": "dot", "size": 11, "title": "woman: 27277 views"}, {"font": {"color": "black"}, "group": 20, "id": "macken", "label": "macken", "shape": "dot", "size": 10, "title": "macken"}]);
+                  edges = new vis.DataSet([{"from": "garda", "title": "Co-occurs 56 times", "to": "ross", "width": 56}, {"from": "garda", "title": "Co-occurs 78 times", "to": "pursuit", "width": 78}, {"from": "garda", "title": "Co-occurs 41 times", "to": "male", "width": 41}, {"from": "garda", "title": "Co-occurs 240 times", "to": "width", "width": 240}, {"from": "garda", "title": "Co-occurs 88 times", "to": "trafficking", "width": 88}, {"from": "garda", "title": "Co-occurs 37 times", "to": "assault", "width": 37}, {"from": "garda", "title": "Co-occurs 47 times", "to": "blanchardstown", "width": 47}, {"from": "garda", "title": "Co-occurs 27 times", "to": "waterford", "width": 27}, {"from": "garda", "title": "Co-occurs 72 times", "to": "station", "width": 72}, {"from": "garda", "title": "Co-occurs 24 times", "to": "seizure", "width": 24}, {"from": "garda", "title": "Co-occurs 27 times", "to": "running", "width": 27}, {"from": "garda", "title": "Co-occurs 31 times", "to": "men", "width": 31}, {"from": "garda", "title": "Co-occurs 57 times", "to": "members", "width": 57}, {"from": "garda", "title": "Co-occurs 58 times", "to": "gang", "width": 58}, {"from": "garda", "title": "Co-occurs 43 times", "to": "moorehouse", "width": 43}, {"from": "garda", "title": "Co-occurs 11 times", "to": "domestic", "width": 11}, {"from": "garda", "title": "Co-occurs 48 times", "to": "fowler", "width": 48}, {"from": "garda", "title": "Co-occurs 61 times", "to": "dublin", "width": 61}, {"from": "garda", "title": "Co-occurs 47 times", "to": "criminal", "width": 47}, {"from": "garda", "title": "Co-occurs 21 times", "to": "want", "width": 21}, {"from": "garda", "title": "Co-occurs 6 times", "to": "opw", "width": 6}, {"from": "width", "title": "Co-occurs 768 times", "to": "height", "width": 768}, {"from": "width", "title": "Co-occurs 71 times", "to": "murder", "width": 71}, {"from": "width", "title": "Co-occurs 53 times", "to": "watson", "width": 53}, {"from": "width", "title": "Co-occurs 49 times", "to": "FALSE", "width": 49}, {"from": "width", "title": "Co-occurs 57 times", "to": "bike", "width": 57}, {"from": "width", "title": "Co-occurs 11 times", "to": "charles", "width": 11}, {"from": "hospital", "title": "Co-occurs 69 times", "to": "suspect", "width": 69}, {"from": "prison", "title": "Co-occurs 48 times", "to": "service", "width": 48}, {"from": "john", "title": "Co-occurs 44 times", "to": "went", "width": 44}, {"from": "victims", "title": "Co-occurs 47 times", "to": "money", "width": 47}, {"from": "cannabis", "title": "Co-occurs 41 times", "to": "use", "width": 41}, {"from": "tribunal", "title": "Co-occurs 34 times", "to": "case", "width": 34}, {"from": "george", "title": "Co-occurs 46 times", "to": "police", "width": 46}, {"from": "lowry", "title": "Co-occurs 51 times", "to": "independent", "width": 51}, {"from": "No keywords", "title": "Co-occurs 96 times", "to": "No keywords", "width": 96}, {"from": "height", "title": "Co-occurs 50 times", "to": "kenneally", "width": 50}, {"from": "results", "title": "Co-occurs 33 times", "to": "south", "width": 33}, {"from": "sophie", "title": "Co-occurs 32 times", "to": "label", "width": 32}, {"from": "dog", "title": "Co-occurs 52 times", "to": "dogs", "width": 52}, {"from": "farrell", "title": "Co-occurs 62 times", "to": "man", "width": 62}, {"from": "glont", "title": "Co-occurs 11 times", "to": "court", "width": 11}, {"from": "site", "title": "Co-occurs 35 times", "to": "gardai", "width": 35}, {"from": "fraud", "title": "Co-occurs 30 times", "to": "crime", "width": 30}, {"from": "robert", "title": "Co-occurs 57 times", "to": "donoghue", "width": 57}, {"from": "kmh", "title": "Co-occurs 40 times", "to": "driver", "width": 40}, {"from": "council", "title": "Co-occurs 47 times", "to": "dublin", "width": 47}, {"from": "gsoc", "title": "Co-occurs 56 times", "to": "party", "width": 56}, {"from": "inquiry", "title": "Co-occurs 19 times", "to": "families", "width": 19}, {"from": "court", "title": "Co-occurs 6 times", "to": "test", "width": 6}, {"from": "woman", "title": "Co-occurs 44 times", "to": "macken", "width": 44}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
